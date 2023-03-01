@@ -2,6 +2,7 @@ package com.jahnav.notes.entites;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
+import androidx.room.Delete;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -24,5 +25,4 @@ public class Note {
     public String getDescription() {
         return description;
     }
-
 }

@@ -17,9 +17,13 @@ import java.util.List;
 
 public class NoteRvAdapter extends RecyclerView.Adapter<NoteRvAdapter.ViewHolder> {
 
+    private Context context;
     private ArrayList<Note> allNotes = new ArrayList<>();
+    NoteClickInterface noteClickInterface;
 
-    public NoteRvAdapter(Context context){
+    public NoteRvAdapter(Context context, NoteClickInterface noteClickInterface ){
+        this.context = context;
+        this.noteClickInterface = noteClickInterface;
 
     }
 
@@ -48,8 +52,20 @@ public class NoteRvAdapter extends RecyclerView.Adapter<NoteRvAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull NoteRvAdapter.ViewHolder holder, int position) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                noteClickInterface.onItemClick(allNotes.get(holder.getAdapterPosition()));
+            }
+        });
         holder.title.setText(allNotes.get(position).getTitle());
         holder.description.setText(allNotes.get(position).getDescription());
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                noteClickInterface.onDeleteIconClick(allNotes.get(holder.getAdapterPosition()));
+            }
+        });
     }
 
     @Override
@@ -61,5 +77,11 @@ public class NoteRvAdapter extends RecyclerView.Adapter<NoteRvAdapter.ViewHolder
         allNotes.clear();
         allNotes.addAll(newList);
         notifyDataSetChanged();
+    }
+
+
+    interface NoteClickInterface{
+        void onDeleteIconClick(Note note);
+        void onItemClick(Note note);
     }
 }

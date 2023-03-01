@@ -13,10 +13,12 @@ import java.util.List;
 public interface NoteDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Note note);
-
     @Query("DELETE FROM notes_table")
     void deleteAll();
 
     @Query("SELECT * FROM notes_table")
     LiveData<List<Note>> getAllNotes();
+
+    @Delete
+    void delete(Note note);
 }

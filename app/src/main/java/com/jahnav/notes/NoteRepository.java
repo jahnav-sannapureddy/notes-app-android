@@ -35,7 +35,21 @@ public class NoteRepository {
     }
 
     public void deleteAll(){
-        noteDao.deleteAll();
+        NoteRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                noteDao.deleteAll();
+            }
+        });
+    }
+
+    public void delete(Note note){
+        NoteRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                noteDao.delete(note);
+            }
+        });
     }
 
 
