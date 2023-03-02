@@ -36,11 +36,14 @@ public class AddNoteActivity extends AppCompatActivity {
 
         noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
 
-//        if(intent.getStringExtra("type").equals("edit")){
-//            title.setText(intent.getStringExtra("noteTitle"));
-//            description.setText(intent.getStringExtra("noteDescription"));
-//            noteId = intent.getIntExtra("noteId", -1);
-//        }
+        Intent intent = getIntent();
+        if(intent!=null && intent.getExtras()!=null){
+            if(intent.getStringExtra("type").equals("edit")){
+                title.setText(intent.getStringExtra("noteTitle"));
+                description.setText(intent.getStringExtra("noteDescription"));
+                noteId = intent.getIntExtra("noteId", -1);
+            }
+        }
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override

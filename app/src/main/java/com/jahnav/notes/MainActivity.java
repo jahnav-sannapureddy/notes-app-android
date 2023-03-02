@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     FloatingActionButton floatingActionButton;
     NoteViewModel noteViewModel;
+    public static final String TYPE ="NOTE_TYPE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(Note note) {
                 Intent intent = new Intent(MainActivity.this, AddNoteActivity.class);
-                intent.putExtra("type", "edit");
+                intent.putExtra(TYPE, "edit");
                 intent.putExtra("noteTitle", note.getTitle());
                 intent.putExtra("noteDescription", note.getDescription());
                 intent.putExtra("noteId", note.id);
@@ -85,9 +86,6 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.delete_all_menuitem:
                 noteViewModel.deleteAll();
-                return true;
-            case R.id.about_action:
-                //
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
