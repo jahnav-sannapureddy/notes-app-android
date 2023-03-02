@@ -51,6 +51,14 @@ public class NoteRepository {
             }
         });
     }
+    public void update(Note note){
+        NoteRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                noteDao.update(note);
+            }
+        });
+    }
 
 
     public LiveData<List<Note>> getAllNotes(){

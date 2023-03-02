@@ -6,11 +6,8 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jahnav.notes.entites.Note;
@@ -38,35 +35,30 @@ public class AddNoteActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if(intent!=null && intent.getExtras()!=null){
-            if(intent.getStringExtra("type").equals("edit")){
+            if(intent.getStringExtra(MainActivity.TYPE).equals("edit")){
                 title.setText(intent.getStringExtra("noteTitle"));
                 description.setText(intent.getStringExtra("noteDescription"));
                 noteId = intent.getIntExtra("noteId", -1);
             }
         }
 
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String noteTitle = title.getText().toString();
-                String noteDescription = description.getText().toString();
-//                if(intent.getStringExtra("type").equals("edit")){
-//                    if(!TextUtils.isEmpty(noteTitle) && !TextUtils.isEmpty(noteDescription)){
-//                        Note updatedNote = new Note(noteTitle, noteDescription);
-//                        updatedNote.id = noteId;
-//                        //
-//                        Toast.makeText(AddNoteActivity.this, "edit", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//                else
-
+        save.setOnClickListener(view -> {
+            String noteTitle = title.getText().toString();
+            String noteDescription = description.getText().toString();
+            if(intent!=null && intent.getExtras()!=null &&  intent.getStringExtra(MainActivity.TYPE).equals("edit")){
+                if(!TextUtils.isEmpty(noteTitle) && !TextUtils.isEmpty(noteDescription)){
+                    Note updatedNote = new Note(noteTitle, noteDescription);
+                    updatedNote.id = noteId;
+                    noteViewModel.update(updatedNote);
+                }
+            }
+            else{
                 if(!TextUtils.isEmpty(noteTitle) && !TextUtils.isEmpty(noteDescription)){
                     noteViewModel.insert(new Note(noteTitle, noteDescription));
                     Toast.makeText(AddNoteActivity.this, "Added", Toast.LENGTH_SHORT).show();
                 }
-                startActivity(new Intent(AddNoteActivity.this, MainActivity.class));
-                finish();
             }
+            finish();
         });
 
     }
