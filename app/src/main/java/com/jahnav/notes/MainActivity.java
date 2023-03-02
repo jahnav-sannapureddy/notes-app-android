@@ -2,26 +2,24 @@ package com.jahnav.notes;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jahnav.notes.entites.Note;
 
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
+    SharedPreferences sharedPreferences;
     RecyclerView recyclerView;
     FloatingActionButton floatingActionButton;
     NoteViewModel noteViewModel;
@@ -32,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         recyclerView = findViewById(R.id.recycler_view);
         floatingActionButton = findViewById(R.id.addfloatingActionButton);
 
@@ -39,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDeleteIconClick(Note note) {
                 noteViewModel.delete(note);
-//                Toast.makeText(MainActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -58,20 +56,11 @@ public class MainActivity extends AppCompatActivity {
 
         noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
 
-        noteViewModel.getAllNotes().observe(this, new Observer<List<Note>>() {
-            @Override
-            public void onChanged(List<Note> notes) {
-                noteRvAdapter.updateList(notes);
-            }
-        });
+        noteViewModel.getAllNotes().observe(this, noteRvAdapter::updateList);
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddNoteActivity.class);
-                startActivity(intent);
-//                finish();
-            }
+        floatingActionButton.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, AddNoteActivity.class);
+            startActivity(intent);
         });
     }
     @Override
@@ -80,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         menuInflater.inflate(R.menu.main_menu, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -92,4 +80,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
 }

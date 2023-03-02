@@ -11,4 +11,7 @@
     <color name="background_color_night">#05001E</color>
     <color name="background_color_day">#FFFFFF</color>
     <color name="editTextBackground_night">#2D264D</color>
+
+    <color name="note_item_bg_color">#30A2F2</color>
+    <color name="note_item_bg_color_night">#3987BF</color>
 </resources>

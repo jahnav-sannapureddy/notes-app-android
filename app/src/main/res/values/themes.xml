@@ -16,5 +16,7 @@
         <item name="backgroundColor">@color/background_color_day</item>
         <item name="editTextBackground">@color/white</item>
 
+        <item name="noteItemBackgroundColor">@color/note_item_bg_color</item>
+
     </style>
 </resources>
