@@ -14,7 +14,7 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:contentDescription="add floating action button"
-        app:backgroundTint="#7184FF"
+        app:backgroundTint="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

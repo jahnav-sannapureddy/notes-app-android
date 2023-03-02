@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true" android:state_enabled="true">
+        <shape android:layout_width="match_parent" android:layout_height="match_parent" android:shape="rectangle">
+            <corners android:radius="12dp" />
+            <padding android:top="8dp" android:bottom="8dp" android:left="8dp" android:right="8dp"/>
+            <stroke android:width="2dp" android:color="?attr/titleTextColor"/>
+        </shape>
+    </item>
+    <item android:state_enabled="true">
+        <shape android:layout_width="match_parent" android:layout_height="match_parent" android:shape="rectangle">
+            <corners android:radius="12dp" />
+            <padding android:top="8dp" android:bottom="8dp" android:left="8dp" android:right="8dp"/>
+            <solid android:color="?attr/editTextBackground" />
+            <stroke android:width="2dp" android:color="#8673E6"/>
+        </shape>
+
+    </item>
+</selector>
