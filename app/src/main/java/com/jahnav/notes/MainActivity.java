@@ -3,6 +3,8 @@ package com.jahnav.notes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SearchView;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,18 +15,21 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jahnav.notes.entites.Note;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
-    SharedPreferences sharedPreferences;
     RecyclerView recyclerView;
+    NoteRvAdapter noteRvAdapter;
     FloatingActionButton floatingActionButton;
     NoteViewModel noteViewModel;
     public static final String TYPE ="NOTE_TYPE";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,12 +39,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         floatingActionButton = findViewById(R.id.addfloatingActionButton);
 
-        NoteRvAdapter noteRvAdapter = new NoteRvAdapter(this, new NoteRvAdapter.NoteClickInterface() {
+        noteRvAdapter = new NoteRvAdapter(this, new NoteRvAdapter.NoteClickInterface() {
             @Override
             public void onDeleteIconClick(Note note) {
                 noteViewModel.delete(note);
             }
-
             @Override
             public void onItemClick(Note note) {
                 Intent intent = new Intent(MainActivity.this, AddNoteActivity.class);
@@ -48,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("noteDescription", note.getDescription());
                 intent.putExtra("noteId", note.id);
                 startActivity(intent);
-
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -67,7 +70,42 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.search_menu_item);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filter(query, true);
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText, false);
+                return false;
+            }
+        });
+
         return true;
+    }
+
+
+    public void filter(String text, Boolean onSubmit){
+        ArrayList<Note> filteredList = new ArrayList<>();
+        noteViewModel.getAllNotes().observe(this, notes -> {
+            for(Note note: notes){
+                if(note.getTitle().toLowerCase().contains(text.toLowerCase())){
+                    filteredList.add(note);
+                }
+            }
+        });
+        if(filteredList.isEmpty() && onSubmit){
+            Toast.makeText(this, "Not found", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            noteRvAdapter.updateList(filteredList);
+        }
+
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
