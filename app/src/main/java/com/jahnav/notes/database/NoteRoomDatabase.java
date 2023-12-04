@@ -30,7 +30,7 @@ public abstract class NoteRoomDatabase extends RoomDatabase {
             synchronized (NoteRoomDatabase.class){
                 if(INSTANCE == null){
                     // build database and store it in INSTANCE
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), NoteRoomDatabase.class, "note_database")
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), NoteRoomDatabase.class, "note_database2")
                             .build();
                 }
             }

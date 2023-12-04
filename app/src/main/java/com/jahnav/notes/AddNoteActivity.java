@@ -12,6 +12,11 @@ import android.widget.Toast;
 
 import com.jahnav.notes.entites.Note;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Date;
+
 public class AddNoteActivity extends AppCompatActivity {
 
     EditText title;
@@ -47,14 +52,25 @@ public class AddNoteActivity extends AppCompatActivity {
             String noteDescription = description.getText().toString();
             if(intent!=null && intent.getExtras()!=null &&  intent.getStringExtra(MainActivity.TYPE).equals("edit")){
                 if(!TextUtils.isEmpty(noteTitle) && !TextUtils.isEmpty(noteDescription)){
-                    Note updatedNote = new Note(noteTitle, noteDescription);
+                    Note updatedNote;
+                    updatedNote = new Note(noteTitle, noteDescription, new Date().toString());
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");
+                        updatedNote.setUpdatedTime(dtf.format(LocalDateTime.now()));
+                    }
                     updatedNote.id = noteId;
                     noteViewModel.update(updatedNote);
                 }
             }
             else{
                 if(!TextUtils.isEmpty(noteTitle) && !TextUtils.isEmpty(noteDescription)){
-                    noteViewModel.insert(new Note(noteTitle, noteDescription));
+                    Note newNote;
+                    newNote = new Note(noteTitle, noteDescription, new Date().toString());
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");
+                        newNote.setUpdatedTime(dtf.format(LocalDateTime.now()));
+                    }
+                    noteViewModel.insert(newNote);
                     Toast.makeText(AddNoteActivity.this, "Added", Toast.LENGTH_SHORT).show();
                 }
             }

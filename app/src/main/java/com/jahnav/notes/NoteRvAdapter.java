@@ -32,11 +32,13 @@ public class NoteRvAdapter extends RecyclerView.Adapter<NoteRvAdapter.ViewHolder
         TextView title;
         TextView description;
         ImageView delete;
+        TextView updateTime;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title_tv);
             description = itemView.findViewById(R.id.description_tv);
             delete = itemView.findViewById(R.id.imageView);
+            updateTime = itemView.findViewById(R.id.updatedTime);
         }
     }
 
@@ -60,6 +62,7 @@ public class NoteRvAdapter extends RecyclerView.Adapter<NoteRvAdapter.ViewHolder
         });
         holder.title.setText(allNotes.get(position).getTitle());
         holder.description.setText(allNotes.get(position).getDescription());
+        holder.updateTime.setText(allNotes.get(position).getUpdatedTime());
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
